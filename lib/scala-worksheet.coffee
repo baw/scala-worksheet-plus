@@ -51,10 +51,12 @@ module.exports =
     for line in rawRestults.split "\n"
       isScalaPrompt = line.match @regexps.scalaPrompt
       isEmptyLine = line.match @regexps.emptyLine
-
+      isLineBreak = line.match @regexps.lineBreak
       metFirstScalaPrompt = isScalaPrompt unless metFirstScalaPrompt
       continue unless metFirstScalaPrompt
-      continue if isScalaPrompt or line.match @regexps.lineNotEnd
+      continue if isScalaPrompt
+      line = "" if isLineBreak
+
       if isEmptyLine
         if firstEmptyLine
           firstEmptyLine = false
@@ -68,5 +70,5 @@ module.exports =
 
   regexps:
     scalaPrompt: /^scala\>/
-    lineNotEnd: /^\s+\|/
+    lineBreak: /^\s+\|/
     emptyLine: /^\s*$/
