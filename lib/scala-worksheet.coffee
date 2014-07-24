@@ -10,16 +10,16 @@ module.exports =
     console.log 'deactivate'
     @scalaProcess.stdin.end()
     @scalaProcess.kill()
-    
+
   runWorksheet: () ->
     sourcesPane = @findSourcesPane()
 
-    sourcesEditor = sourcesPane.getActiveEditor()
+    @sourcesEditor = sourcesPane.getActiveEditor()
     atom.workspace.open("SCALAWORKSHEET", {
       split: 'right'
       searchAllPanes: true
       }).then (targetEditor) =>
-        @executeWorkSheet sourcesEditor.getText(), targetEditor
+        @executeWorkSheet @sourcesEditor.getText(), targetEditor
 
   findSourcesPane: () ->
     panes = atom.workspace.getPanes()
@@ -27,7 +27,7 @@ module.exports =
 
   executeWorkSheet: (source, targetEditor)->
     scalaOut = ''
-    if not @scalaProcess?
+    if not @scalaProcess? or true
       console.log "creating scala process"
       @scalaProcess = ChildProcess.spawn 'scala'
       @scalaProcess.stdout.on 'data', (data)->
@@ -37,14 +37,36 @@ module.exports =
         console.log('stderr')
         console.log(stderr.toString 'utf-8')
 
-      @scalaProcess.on 'close', (code)->
+      @scalaProcess.on 'close', (code) =>
         console.log "close #{code}"
-        targetEditor.setText scalaOut
+        @processResults scalaOut, targetEditor
 
     @scalaProcess.stdin.write source
+    @scalaProcess.stdin.end()
+
+  processResults: (rawRestults, targetEditor)->
+    resultLines = []
+    metFirstScalaPrompt = false
+    firstEmptyLine = true
+    for line in rawRestults.split "\n"
+      isScalaPrompt = line.match @regexps.scalaPrompt
+      isEmptyLine = line.match @regexps.emptyLine
+
+      metFirstScalaPrompt = isScalaPrompt unless metFirstScalaPrompt
+      continue unless metFirstScalaPrompt
+      continue if isScalaPrompt or line.match @regexps.lineNotEnd
+      if isEmptyLine
+        if firstEmptyLine
+          firstEmptyLine = false
+          continue
+      else
+        firstEmptyLine = true
+      resultLines.push line
+
+    targetEditor.setText resultLines.join "\n"
 
 
-    # scalaProcess = new BufferedProcess({command, stdout, exit})
-    # console.log scalaProcess.stdin.write 'val a = 1', 'utf-8', ()->
-      # console.log('written')
-      # scalaProcess.stdin.end()
+  regexps:
+    scalaPrompt: /^scala\>/
+    lineNotEnd: /^\s+\|/
+    emptyLine: /^\s*$/

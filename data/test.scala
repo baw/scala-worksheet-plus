@@ -3,6 +3,8 @@ val b = "aa"
 
 def aa = "a"
 
-class a(x:Int, y:Int){
-  
+class A(x:Int, y:Int){
+  def f = x * y
 }
+
+(new A(1, 2)).f
