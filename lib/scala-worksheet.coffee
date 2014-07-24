@@ -1,6 +1,8 @@
 {EditorView} = require 'atom'
 {BufferedProcess} = require 'atom'
 ChildProcess = require 'child_process'
+ScalaLineProcessor = require './scala-line-processor'
+
 module.exports =
   activate: (state) ->
     console.log 'activate'
@@ -15,60 +17,41 @@ module.exports =
     sourcesPane = @findSourcesPane()
 
     @sourcesEditor = sourcesPane.getActiveEditor()
-    atom.workspace.open("SCALAWORKSHEET", {
-      split: 'right'
-      searchAllPanes: true
-      }).then (targetEditor) =>
-        @executeWorkSheet @sourcesEditor.getText(), targetEditor
+    @processor = new ScalaLineProcessor @sourcesEditor
+    if @scalaProcess?
+      @processor.metFirstScalaPrompt = true
+    @executeWorkSheet @sourcesEditor.getText(), @sourcesEditor
+
 
   findSourcesPane: () ->
     panes = atom.workspace.getPanes()
     panes[0]
 
   executeWorkSheet: (source, targetEditor)->
-    scalaOut = ''
-    if not @scalaProcess? or true
+    # scalaOut = ''
+    if not @scalaProcess?
       console.log "creating scala process"
       @scalaProcess = ChildProcess.spawn 'scala'
-      @scalaProcess.stdout.on 'data', (data)->
-        scalaOut += data.toString 'utf-8'
 
-      @scalaProcess.stderr.on 'data', (data)->
+      @scalaProcess.stdout.on 'data', (data) =>
+        @processor.processData data.toString 'utf-8'
+
+      @scalaProcess.stderr.on 'data', (data) ->
         console.log('stderr')
         console.log(stderr.toString 'utf-8')
 
       @scalaProcess.on 'close', (code) =>
         console.log "close #{code}"
-        @processResults scalaOut, targetEditor
+        # @processResults scalaOut, targetEditor
 
-    @scalaProcess.stdin.write source
-    @scalaProcess.stdin.end()
+      @scalaProcess.stdin.on 'drain', ()->
+        console.log "stdin.drain"
 
-  processResults: (rawRestults, targetEditor)->
-    resultLines = []
-    metFirstScalaPrompt = false
-    firstEmptyLine = true
-    for line in rawRestults.split "\n"
-      isScalaPrompt = line.match @regexps.scalaPrompt
-      isEmptyLine = line.match @regexps.emptyLine
-      isLineBreak = line.match @regexps.lineBreak
-      metFirstScalaPrompt = isScalaPrompt unless metFirstScalaPrompt
-      continue unless metFirstScalaPrompt
-      continue if isScalaPrompt
-      line = "" if isLineBreak
+      @scalaProcess.stdout.on 'drain', ()->
+        console.log "stdout.drain"
 
-      if isEmptyLine
-        if firstEmptyLine
-          firstEmptyLine = false
-          continue
-      else
-        firstEmptyLine = true
-      resultLines.push line
+    console.log "writing"
 
-    targetEditor.setText resultLines.join "\n"
-
-
-  regexps:
-    scalaPrompt: /^scala\>/
-    lineBreak: /^\s+\|/
-    emptyLine: /^\s*$/
+    res = @scalaProcess.stdin.write source
+    console.log "write res: #{res}"
+    # @scalaProcess.stdin.end()
