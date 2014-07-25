@@ -51,7 +51,7 @@ class ScalaLineProcessor
   formatLine: (line)->
     line = line.replace @regexps.comment
     if line.length > @maxLength
-      return line.substring 0, @maxLength - 1
+      return line.substring 0, @maxLength
 
     return line + @repeat " ", (@maxLength - line.length)
 

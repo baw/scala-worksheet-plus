@@ -20,6 +20,7 @@ module.exports =
     @processor = new ScalaLineProcessor @sourcesEditor
     if @scalaProcess?
       @processor.metFirstScalaPrompt = true
+      @processor.processData "scala>"
     @executeWorkSheet @sourcesEditor.getText(), @sourcesEditor
 
 
