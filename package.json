@@ -1,10 +1,15 @@
 {
   "name": "scala-worksheet",
+  "description": "Scala worksheet package",
+  "repository": "https://github.com/lpenguin/atom-scala-worksheet.git",
   "main": "./lib/scala-worksheet",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A short description of your package",
   "activationEvents": ["scala-worksheet:run"],
-  "repository": "https://github.com/atom/scala-worksheet",
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/lpenguin/atom-scala-worksheet.git"
+  },
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
