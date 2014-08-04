@@ -9,7 +9,7 @@ class A extends C {
 
 object B extends C {
 
-}
+}                                                   // defined module B
 val a = "asd"                                       // a: java.lang.String = asd
-new A()                                             // res1: A = A@1cb6847f
-B.a
+new A()                                             // res2: A = A@5b54a573
+B.a                                                 // res3: Int = 1

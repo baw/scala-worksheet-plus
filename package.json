@@ -1,12 +1,12 @@
 {
   "name": "scala-worksheet",
-  "description": "A short description of your package",
+  "description": "Simple scala worksheet evaluator",
   "repository": {
     "type": "git",
     "url": "https://github.com/lpenguin/atom-scala-worksheet.git"
   },
   "main": "./lib/scala-worksheet",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "activationEvents": [
     "scala-worksheet:run"
   ],
