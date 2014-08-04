@@ -10,14 +10,6 @@ class ScalaLineProcessor
     @maxLength = 50
     console.log "scala-line-processor created"
 
-  processData: (data)->
-    @currentLine += data
-    if @currentLine.contains "\n"
-      lines = @currentLine.split "\n"
-      @currentLine = lines.pop()
-      for line in lines
-        @processLine line
-
   processLine: (line)->
     isScalaPrompt = line.match @regexps.scalaPrompt
     isEmptyLine = line.match @regexps.emptyLine

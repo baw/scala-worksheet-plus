@@ -1,10 +1,15 @@
-val a:Int = 3                                       // a: Int = 3
-val b = "aa"                                        // b: java.lang.String = aa
+trait C {
+  def a = 1
+  val y = 2
+}                                                   // defined trait C
 
-def aa = "a"                                        // aa: java.lang.String
+class A extends C {
 
-class A(x:Int, y:Int){
-  def f = x * y + 2
 }                                                   // defined class A
 
-(new A(a, 2)).f                                     // res5: Int = 6
+object B extends C {
+
+}
+val a = "asd"                                       // a: java.lang.String = asd
+new A()                                             // res1: A = A@1cb6847f
+B.a
