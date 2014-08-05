@@ -1,2 +1,5 @@
 # Scala worksheet
-Just run command "scala-worksheet:run"
+
+Set **scala process** config variable to path to scala executable
+
+Then just run command `scala-worksheet:run`

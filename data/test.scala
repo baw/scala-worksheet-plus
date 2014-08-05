@@ -9,7 +9,8 @@ class A extends C {
 
 object B extends C {
 
-}                                                   // defined module B
-val a = "asd"                                       // a: java.lang.String = asd
-new A()                                             // res2: A = A@5b54a573
+}                                                   // defined object B
+val a = "asd"                                       // a: String = asd
+new A()                                             // res2: A = A@4f91912f
 B.a                                                 // res3: Int = 1
+val a = 1                                           // a: Int = 1

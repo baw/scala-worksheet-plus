@@ -2,11 +2,17 @@ ChildProcess = require 'child_process'
 
 module.exports=
 class ScalaProcess
+  constructor: (executable) ->
+    @executable = executable
   setBlockCallback: (blockCallback)->
     @blockCallback = blockCallback
 
-  initialize: (readyCallback, blockCallback)->
-    @scala = ChildProcess.spawn 'scala'
+  setErrorCallback: (errorCallback)->
+    @errorCallback = errorCallback
+
+  initialize: (readyCallback)->
+    console.log "Spawning scala process: #{@executable}"
+    @scala = ChildProcess.spawn @executable
     @scala.stdout.on 'data', (data) => @processOut data
     @scala.stderr.on 'data', (data) => @processErr data
     @scala.stdout.on 'close', (res) => @processClose res
@@ -44,7 +50,11 @@ class ScalaProcess
 
 
   processErr: (data) ->
-    error_buffer += data.toString('utf-8')
+    @error_buffer += data.toString('utf-8')
+    if @error_buffer.contains "\n"
+      tokens = @error_buffer.split "\n"
+      @error_buffer = tokens.pop()
+      @errorCallback token for token in tokens
 
   processClose: (res) ->
     console.log "scala process closed with res: #{res}"
