@@ -4,13 +4,14 @@ ScalaProcess = require './scala-process'
 ScalaLineProcessor = require './scala-line-processor'
 
 module.exports =
+  configDefaults:
+    scalaProcess: "scala"
+
   activate: (state) ->
-    console.log 'activate'
     atom.workspaceView.command "scala-worksheet:run", =>
       @prepareRun () => @executeWorkSheet @sourcesEditor.getText(), @sourcesEditors
 
   deactivate: ()->
-    console.log 'deactivate'
     @scalaProcess.stdin.end()
     @scalaProcess.kill()
 
@@ -19,14 +20,13 @@ module.exports =
 
     @sourcesEditor = sourcesPane.getActiveEditor()
     @scalaLiner = new ScalaLineProcessor @sourcesEditor
-
     if not @scalaProcess?
-      @scalaProcess = new ScalaProcess()
+      @scalaProcess = new ScalaProcess atom.config.get 'atom-scala-worksheet.scalaProcess'
       @scalaProcess.setBlockCallback (block) =>
-        console.log "new block: "
-        console.log block
         for line in block.split "\n"
           @scalaLiner.processLine line
+      @scalaProcess.setErrorCallback (error) ->
+        console.log "Error: #{error}"
       @scalaProcess.initialize ()-> callback()
 
     callback()

@@ -32,7 +32,6 @@ class ScalaLineProcessor
 
     unless isEmptyLine or isLineBreak
       editorLine = @editorLines[@editorLineIndex]
-      console.log 'setting editor text: '+@editorLineIndex
       editorLine = @formatLine editorLine
       @editorLines[@editorLineIndex] = editorLine + "  // " + line
       @targetEditor.setText(@editorLines.join("\n"))
