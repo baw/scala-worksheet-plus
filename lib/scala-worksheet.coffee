@@ -21,7 +21,7 @@ module.exports =
     @sourcesEditor = sourcesPane.getActiveEditor()
     @scalaLiner = new ScalaLineProcessor @sourcesEditor
     if not @scalaProcess?
-      @scalaProcess = new ScalaProcess atom.config.get 'atom-scala-worksheet.scalaProcess'
+      @scalaProcess = new ScalaProcess atom.config.get 'scala-worksheet.scalaProcess'
       @scalaProcess.setBlockCallback (block) =>
         for line in block.split "\n"
           @scalaLiner.processLine line
