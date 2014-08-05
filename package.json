@@ -6,7 +6,7 @@
     "url": "https://github.com/lpenguin/scala-worksheet.git"
   },
   "main": "./lib/scala-worksheet",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "activationEvents": [
     "scala-worksheet:run"
   ],
