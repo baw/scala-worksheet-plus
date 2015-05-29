@@ -7,9 +7,9 @@
   },
   "main": "./lib/scala-worksheet",
   "version": "0.3.8",
-  "activationCommands": [
-    "scala-worksheet:run"
-  ],
+  "activationCommands": {
+    "atom-workspace": "scala-worksheet:run"
+  },
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
