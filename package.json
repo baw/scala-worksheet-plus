@@ -3,7 +3,7 @@
   "description": "Simple scala worksheet evaluator",
   "repository": {
     "type": "git",
-    "url": "https://github.com/imamathwiz/atom-scala-worksheet.git"
+    "url": "https://github.com/imamathwiz/scala-worksheet-new.git"
   },
   "main": "./lib/scala-worksheet",
   "version": "0.3.6",
