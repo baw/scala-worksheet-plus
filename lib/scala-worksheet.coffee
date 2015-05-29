@@ -8,7 +8,7 @@ module.exports =
     scalaProcess: "scala"
 
   activate: (state) ->
-    atom.workspaceView.command "scala-worksheet:run", =>
+    atom.workspaceView.command "scala-worksheet-plus:run", =>
       @prepareRun () => @executeWorkSheet @sourcesEditor.getText(), @sourcesEditors
 
   deactivate: ()->
@@ -21,7 +21,7 @@ module.exports =
     @sourcesEditor = sourcesPane.getActiveEditor()
     @scalaLiner = new ScalaLineProcessor @sourcesEditor
     if not @scalaProcess?
-      @scalaProcess = new ScalaProcess atom.config.get 'scala-worksheet.scalaProcess'
+      @scalaProcess = new ScalaProcess atom.config.get 'scala-worksheet-plus.scalaProcess'
       @scalaProcess.setBlockCallback (block) =>
         for line in block.split "\n"
           @scalaLiner.processLine line

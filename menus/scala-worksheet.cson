@@ -2,8 +2,8 @@
 'context-menu':
   '.overlayer':[
     {
-      'label': 'Enable scala-worksheet',
-      'command': 'scala-worksheet:run'
+      'label': 'Enable Scala Worksheet Plus',
+      'command': 'scala-worksheet-plus:run'
     }
   ]
 
@@ -11,9 +11,9 @@
   {
     'label': 'Packages'
     'submenu': [
-      'label': 'scala-worksheet'
+      'label': 'Scala Worksheet Plus'
       'submenu': [
-        { 'label': 'Run', 'command': 'scala-worksheet:run' }
+        { 'label': 'Run', 'command': 'scala-worksheet-plus:run' }
       ]
     ]
   }
