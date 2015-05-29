@@ -6,7 +6,7 @@
     "url": "https://github.com/imamathwiz/scala-worksheet-new.git"
   },
   "main": "./lib/scala-worksheet",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "activationCommands": [
     "scala-worksheet:run"
   ],
