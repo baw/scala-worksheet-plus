@@ -1,7 +1,11 @@
 # See https://atom.io/docs/latest/creating-a-package#menus for more details
 'context-menu':
-  '.overlayer':
-      'Enable scala-worksheet': 'scala-worksheet:run'
+  '.overlayer':[
+    {
+      'label': 'Enable scala-worksheet',
+      'command': 'scala-worksheet:run'
+    }
+  ]
 
 'menu': [
   {

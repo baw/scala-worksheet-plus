@@ -7,7 +7,7 @@
   },
   "main": "./lib/scala-worksheet",
   "version": "0.3.4",
-  "activationEvents": [
+  "activationCommands": [
     "scala-worksheet:run"
   ],
   "license": "MIT",
