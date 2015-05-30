@@ -41,7 +41,7 @@ class ScalaProcess
   processOut: (data) ->
     str = data.toString('utf-8')
     @buffer += str
-    if str.contains "\n"
+    if str.includes "\n"
       blocks = @buffer.split @constants.END_OF_BLOCK
       @buffer = blocks.pop()
       # console.log "buffer now: #{@buffer}"
