@@ -1,15 +1,18 @@
-{EditorView} = require 'atom'
+{TextEditorView} = require 'atom-space-pen-views'
 {BufferedProcess} = require 'atom'
 ScalaProcess = require './scala-process'
 ScalaLineProcessor = require './scala-line-processor'
 
 module.exports =
-  configDefaults:
-    scalaProcess: "scala"
+  config:
+    scalaProcess:
+      default: 'scala'
+      type: 'string'
 
   activate: (state) ->
-    atom.workspaceView.command "scala-worksheet-plus:run", =>
-      @prepareRun () => @executeWorkSheet @sourcesEditor.getText(), @sourcesEditors
+    atom.commands.add 'atom-workspace',
+     'scala-worksheet-plus:run': =>
+        @prepareRun () => @executeWorkSheet @sourcesEditor.getText(), @sourcesEditors
 
   deactivate: ()->
     @scalaProcess.stdin.end()
@@ -21,7 +24,7 @@ module.exports =
     @sourcesEditor = sourcesPane.getActiveEditor()
     @scalaLiner = new ScalaLineProcessor @sourcesEditor
     if not @scalaProcess?
-      @scalaProcess = new ScalaProcess atom.config.get 'scala-worksheet-plus.scalaProcess'
+      @scalaProcess = new ScalaProcess atom.config.get 'scala-worksheet-test1.scalaProcess'
       @scalaProcess.setBlockCallback (block) =>
         for line in block.split "\n"
           @scalaLiner.processLine line

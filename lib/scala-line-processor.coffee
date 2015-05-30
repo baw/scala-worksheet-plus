@@ -1,7 +1,7 @@
 module.exports =
 class ScalaLineProcessor
   constructor: (@targetEditor)->
-    @targetEditor.moveCursorToTop()
+    @targetEditor.moveToTop()
     @editorLines = @targetEditor.getText().split "\n"
     @editorLineIndex = 0
     @metFirstScalaPrompt = false
