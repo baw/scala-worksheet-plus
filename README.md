@@ -5,4 +5,4 @@ deprecation warnings and continue development.
 
 Set **scala process** config variable to the path of the scala executable.
 
-Then just run command `scala-worksheet-plus:run`
+Then just run the command `scala-worksheet-plus:run`
