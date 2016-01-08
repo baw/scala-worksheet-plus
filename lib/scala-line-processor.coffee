@@ -40,6 +40,8 @@ class ScalaLineProcessor
 
 
   formatLine: (line)->
+    if line == undefined
+      return @repeat " ", @maxLength
     line = line.replace @regexps.comment
     if line.length > @maxLength
       return line.substring 0, @maxLength

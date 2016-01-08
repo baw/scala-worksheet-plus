@@ -31,8 +31,9 @@ module.exports =
       @scalaProcess.setErrorCallback (error) ->
         console.log "Error: #{error}"
       @scalaProcess.initialize ()-> callback()
-
-    callback()
+      callback()
+    else
+      @scalaProcess.reset ()-> callback()
 
 
   findSourcesPane: () ->
