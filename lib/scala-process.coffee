@@ -25,20 +25,24 @@ class ScalaProcess
   is_resetting: false
 
   constants:
-    END_OF_BLOCK: "//[SCALA_WORKSHEET_END_OF_DATA]\n"
+    END_OF_BLOCK: "[SCALA_WORKSHEET_END_OF_DATA]"
 
   reset: (afterResetCallback)->
     @is_resetting = true
+    @afterResetCallback = afterResetCallback
+    @writeBlock ":reset"
+
+  finishReseting: ()->
     @buffer = ""
     @error_buffer = ""
-    @writeBlock ":reset"
     @is_resetting = false
-    afterResetCallback()
+    @afterResetCallback()
+    @afterResetCallback = undefined
 
   writeBlock: (block)->
     @scala.stdin.write block
     @scala.stdin.write "\n"
-    @scala.stdin.write @constants.END_OF_BLOCK
+    @scala.stdin.write "//#{ @constants.END_OF_BLOCK }\n"
 
   processResultBlock: (resultBlock) ->
     if !@is_resetting
@@ -49,15 +53,16 @@ class ScalaProcess
         @blockCallback resultBlock
 
   processOut: (data) ->
-    if !@is_resetting
-      str = data.toString('utf-8')
-      @buffer += str
-      if str.includes "\n"
+    str = data.toString('utf-8')
+    @buffer += str
+    if @buffer.includes @constants.END_OF_BLOCK
+      if !@is_resetting
         blocks = @buffer.split @constants.END_OF_BLOCK
         @buffer = blocks.pop()
-        # console.log "buffer now: #{@buffer}"
-        # console.log blocks
+
         @processResultBlock block for block in blocks
+      else
+        @finishReseting()
 
 
   processErr: (data) ->
