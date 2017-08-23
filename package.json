@@ -6,7 +6,7 @@
     "url": "https://github.com/imamathwiz/scala-worksheet-plus.git"
   },
   "main": "./lib/scala-worksheet",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "activationCommands": {
     "atom-workspace": "scala-worksheet-plus:run"
   },
